@@ -6,6 +6,7 @@ public class ChaserScript : MonoBehaviour
 {
     public Transform player;
     public float speed = 6f;
+    public float speedUp = 1.1f;
     public float searchLength = 10f;
 
     private Vector3 moveDirection;
@@ -36,7 +37,8 @@ public class ChaserScript : MonoBehaviour
             //Debug.Log("衝突");
             Chasing = false;
         }
-        rb.linearVelocity = moveDirection * speed;
+        speedUp += 0.005f;
+        rb.linearVelocity = moveDirection * (speed*speedUp);
     }
     private void OnCollisionEnter(Collision collision)//壁当たったら
     {
@@ -46,11 +48,13 @@ public class ChaserScript : MonoBehaviour
             {
                 ChaserOn(); // 追跡モード
                 Debug.Log("追跡モード");
+                speedUp = 0f;//
             }
             else
             {
                 ChaserOff(); // 徘徊モード
                 Debug.Log("徘徊モード");
+                speedUp = 0f;//
             }
         }
     }
