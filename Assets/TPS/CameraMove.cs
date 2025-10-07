@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     [SerializeField] public GameObject player;
-    float hight = 70f;
+    [SerializeField] float hight = 70f;
 
     PlayerController playerPos;
 
