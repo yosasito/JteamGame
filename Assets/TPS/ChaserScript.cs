@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ChaserScript : MonoBehaviour
 {
     public Transform player;
-    public float speed = 6f;
+    public float speed = 20f;
     public float speedUp = 1.1f;
     public float searchLength = 10f;
 
@@ -14,7 +14,7 @@ public class ChaserScript : MonoBehaviour
 
     private Rigidbody rb;
 
-    public float rayLength = 3f;
+    public float rayLength = 6f;
 
     void Start()
     {
@@ -103,6 +103,7 @@ public class ChaserScript : MonoBehaviour
 
         foreach(var dir in direction)
         {
+            Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
             Ray ray = new Ray(transform.position, dir);
             if (!Physics.Raycast(ray, rayLength, LayerMask.GetMask("Wall")))
             {
@@ -117,7 +118,7 @@ public class ChaserScript : MonoBehaviour
         }
         else
         {
-            moveDirection = -moveDirection;//Uターン
+            moveDirection = Quaternion.Euler(0, 90, 0) * moveDirection;//Uターン
             Debug.Log("trun");
         }
 
