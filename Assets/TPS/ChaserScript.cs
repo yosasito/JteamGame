@@ -14,7 +14,7 @@ public class ChaserScript : MonoBehaviour
 
     private Rigidbody rb;
 
-    public float rayLength = 6.3f;
+    public float rayLength = 2f;
 
     void Start()
     {
