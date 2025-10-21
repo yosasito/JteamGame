@@ -23,7 +23,7 @@ public class DeadCheck : MonoBehaviour
         if (playerController.dead == false)
         {
             //Debug.Log("GameOver");
-            uiText.text = "";
+            uiText.text = " ";
         }
     }
 }
