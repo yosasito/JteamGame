@@ -3,7 +3,7 @@ using UnityEngine;
 public class BrokenWall : MonoBehaviour
 {
     public int hit = 0;
-    public int hitCount;
+    public int hitCount=3;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

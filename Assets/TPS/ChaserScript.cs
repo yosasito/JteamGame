@@ -7,14 +7,16 @@ public class ChaserScript : MonoBehaviour
     public Transform player;
     public float speed = 20f;
     public float speedUp = 1.1f;
-    public float searchLength = 10f;
+    public float searchLength = 20f;
+
+    public float bouncePower = 20f;
 
     private Vector3 moveDirection;
     public bool Chasing = false;
 
     private Rigidbody rb;
 
-    public float rayLength = 6f;
+    public float rayLength = 4f;
 
     void Start()
     {
@@ -44,6 +46,17 @@ public class ChaserScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
+            // 壁の法線（最初に当たった接触面）を取得
+            Vector3 normal = collision.contacts[0].normal;
+
+            // 現在の移動方向を壁の法線で反射
+            moveDirection = Vector3.Reflect(moveDirection, normal).normalized;
+
+            // 反射後の方向へ一瞬バウンドさせる
+            rb.MoveRotation(Quaternion.LookRotation(moveDirection));
+
+            rb.AddForce(moveDirection * bouncePower, ForceMode.Impulse);
+
             if (Chasing)
             {
                 ChaserOn(); // 追跡モード

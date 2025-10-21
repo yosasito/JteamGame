@@ -23,7 +23,7 @@ public class Warning : MonoBehaviour
         }
         else if (chasingS.Chasing == false)
         {
-            uiText.text = "";
+            uiText.text = " ";
         }
     }
 }
