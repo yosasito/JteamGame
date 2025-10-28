@@ -46,7 +46,7 @@ public class ChaserScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            // 壁の法線（最初に当たった接触面）を取得
+            // 最初に当たった接触面
             Vector3 normal = collision.contacts[0].normal;
 
             // 現在の移動方向を壁の法線で反射
@@ -61,7 +61,7 @@ public class ChaserScript : MonoBehaviour
             {
                 ChaserOn(); // 追跡モード
                 Debug.Log("追跡モード");
-                speedUp = 0f;//
+                speedUp = 0f;
             }
             else
             {
@@ -132,7 +132,7 @@ public class ChaserScript : MonoBehaviour
         else
         {
             moveDirection = Quaternion.Euler(0, 90, 0) * moveDirection;//Uターン
-            Debug.Log("trun");
+            //Debug.Log("trun");
         }
 
         rb.MoveRotation(Quaternion.LookRotation(moveDirection));
