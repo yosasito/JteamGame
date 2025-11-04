@@ -2,28 +2,27 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    public GameObject door; // 開閉する扉
-    public float openHeight = 3f; // 開く高さ
+    public GameObject door; 
+    public float openHeight = 100f; // 開く高さ
     public float openSpeed = 2f; // 開閉スピード
 
     private bool isOpen = false;
     private Vector3 closedPos;
     private Vector3 openPos;
 
-    private bool isMoving = false;
+    private bool Moving = false;
 
     void Start()
     {
-        // 扉の初期位置を記録
+        // 扉の位置
         closedPos = door.transform.position;
         openPos = closedPos + Vector3.up * openHeight;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)//playerが踏む
     {
-        if (other.CompareTag("Player") && !isMoving)
+        if (other.CompareTag("Player") && !Moving)
         {
-            // 開閉をトグル（開いていれば閉じ、閉じていれば開く）
             isOpen = !isOpen;
             StopAllCoroutines();
             StartCoroutine(MoveDoor(isOpen));
@@ -32,7 +31,7 @@ public class PressurePlate : MonoBehaviour
 
     System.Collections.IEnumerator MoveDoor(bool open)
     {
-        isMoving = true;
+        Moving = true;
         Vector3 start = door.transform.position;
         Vector3 end = open ? openPos : closedPos;
         float t = 0f;
@@ -45,6 +44,6 @@ public class PressurePlate : MonoBehaviour
         }
 
         door.transform.position = end;
-        isMoving = false;
+        Moving = false;
     }
 }
