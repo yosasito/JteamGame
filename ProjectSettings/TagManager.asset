@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Test1
   - Test2
+  - Key
   layers:
   - Default
   - TransparentFX
