@@ -3,7 +3,8 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     [SerializeField] public GameObject player;
-    [SerializeField] float hight = 70f;
+    [SerializeField] float hight;
+    [SerializeField] float back;
 
     PlayerController playerPos;
 
@@ -17,6 +18,7 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = playerPos.transform.position + new Vector3(0, hight, 0); ;
+        transform.position = playerPos.transform.position + new Vector3(0, hight, back); 
+        //transform.position = playerPos.transform.position + new Vector3(0, 0, back);
     }
 }
