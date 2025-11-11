@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Wall
   - Enemy
+  - Test1
+  - Test2
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Enemy
   - Player
   - SwitchWall
-  - 
+  - Key
   - 
   - 
   - 
