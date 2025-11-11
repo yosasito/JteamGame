@@ -372,7 +372,7 @@ MonoBehaviour:
   speed: 20
   speedUp: 1.1
   searchLength: 20
-  bouncePower: 20
+  bouncePower: 30
   Chasing: 0
   rayLength: 10
 --- !u!23 &5338412014194057550
