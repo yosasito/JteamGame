@@ -1,141 +1,124 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
 public class ChaserScript : MonoBehaviour
 {
     public Transform player;
-    public float speed = 20f;
-    public float speedUp = 1.1f;
-    public float searchLength = 20f;
 
-    public float bouncePower = 20f;
+    public float speed = 5f;
+    public float speedUp = 1f;
+    public float searchLength = 15f;
 
-    private Vector3 moveDirection;
+    public float rayLength = 2f;
+
     public bool Chasing = false;
 
     private Rigidbody rb;
-
-    public float rayLength = 4f;
+    private Vector3 moveDirection;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        ChaserOff();  // ランダム移動
+        ChaserOff();   // 開幕は徘徊
     }
 
     void Update()
     {
+        // 鬼とプレイヤーの距離
         float distance = Vector3.Distance(player.position, transform.position);
-        //Debug.Log(distanceToPlayer);
+        Chasing = distance <= searchLength;
 
-        if (distance <= searchLength)//近づいたら
+        speedUp += 0.001f;
+
+        // ★ 正面が壁なら方向転換
+        if (TouchWall())
         {
-            //Debug.Log("衝突");
-            Chasing = true;
-        }
-        else
-        {
-            //Debug.Log("衝突");
-            Chasing = false;
-        }
-        speedUp += 0.005f;
-        rb.linearVelocity = moveDirection * (speed*speedUp);
-    }
-    private void OnCollisionEnter(Collision collision)//壁当たったら
-    {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            // 最初に当たった接触面
-            Vector3 normal = collision.contacts[0].normal;
-
-            // 現在の移動方向を壁の法線で反射
-            moveDirection = Vector3.Reflect(moveDirection, normal).normalized;
-
-            // 反射後の方向へ一瞬バウンドさせる
-            rb.MoveRotation(Quaternion.LookRotation(moveDirection));
-
-            rb.AddForce(moveDirection * bouncePower, ForceMode.Impulse);
+            speedUp = 1f;
 
             if (Chasing)
             {
-                ChaserOn(); // 追跡モード
-                Debug.Log("追跡モード");
-                speedUp = 0f;
+                ChaserOn();
             }
-            else
-            {
-                ChaserOff(); // 徘徊モード
-                Debug.Log("徘徊モード");
-                speedUp = 0f;//
-            }
+            else 
+                ChaserOff();
         }
+
+        // 移動
+        rb.linearVelocity = moveDirection * (speed * speedUp);
+
+        // 回転
+        if (moveDirection != Vector3.zero)
+            rb.MoveRotation(Quaternion.LookRotation(moveDirection));
     }
-    void ChaserOn()//追跡モード
+
+    // 壁の前まで行ったか
+    bool TouchWall()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+        return Physics.Raycast(origin, moveDirection, rayLength, LayerMask.GetMask("Wall"));
+    }
+
+    // ★ プレイヤー方向へ向く
+    void ChaserOn()
     {
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0;
 
-        Vector3[] direction = {
+        Vector3 bestDir = Vector3.zero;
+        float bestDot = -999f;
+
+        Vector3[] dirs =
+        {
             Vector3.forward,
             Vector3.back,
             Vector3.left,
             Vector3.right
         };
 
-        Vector3 bestMove = direction[0];
-        float maxDot = Vector3.Dot(toPlayer.normalized, bestMove);
-
-        foreach (var dir in direction)
+        foreach (var dir in dirs)
         {
-            float dot = Vector3.Dot(toPlayer.normalized, dir);
-            if (dot > maxDot)
+            // チェック
+            if (Physics.Raycast(transform.position + Vector3.up * 0.5f, dir, rayLength, LayerMask.GetMask("Wall")))
+                continue;
+
+            float dot = Vector3.Dot(dir, toPlayer.normalized);
+            if (dot > bestDot)
             {
-                maxDot = dot;
-                bestMove = dir;
+                bestDot = dot;
+                bestDir = dir;
             }
         }
-        moveDirection = bestMove.normalized;
-        //transform.forward = moveDirection;
 
-        rb.MoveRotation(Quaternion.LookRotation(moveDirection));
-    }
-    void ChaserOff()// 徘徊モード
-    {
-        Vector3[] direction = {
-            Vector3.forward,
-            Vector3.back,
-            Vector3.left,
-            Vector3.right
-        };
-        //moveDirection = direction[Random.Range(0, direction.Length)];
-
-        //transform.forward = moveDirection;
-
-        List<Vector3> DirectionList = new List<Vector3>();
-
-        foreach(var dir in direction)
-        {
-            Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-            Ray ray = new Ray(transform.position, dir);
-            if (!Physics.Raycast(ray, rayLength, LayerMask.GetMask("Wall")))
-            {
-                DirectionList.Add(dir);
-            }
-            Debug.DrawRay(transform.position, dir, Color.blue, rayLength);
-        }
-        if (DirectionList.Count > 0)
-        {
-            moveDirection = DirectionList[Random.Range(0, DirectionList.Count)];
-           // Debug.Log(moveDirection);
-        }
+        if (bestDir != Vector3.zero)
+            moveDirection = bestDir;
         else
+            moveDirection = -moveDirection; // 反射
+    }
+
+    void ChaserOff()//徘徊
+    {
+        Vector3[] dirs =
         {
-            moveDirection = Quaternion.Euler(0, 90, 0) * moveDirection;//Uターン
-            //Debug.Log("trun");
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right
+        };
+
+        List<Vector3> validDir = new List<Vector3>();
+
+        foreach (var dir in dirs)
+        {
+            Vector3 origin = transform.position + Vector3.up * 0.5f;
+            if (!Physics.Raycast(origin, dir, rayLength, LayerMask.GetMask("Wall")))
+            {
+                validDir.Add(dir);
+            }
         }
 
-        rb.MoveRotation(Quaternion.LookRotation(moveDirection));
-    
+        if (validDir.Count > 0)
+            moveDirection = validDir[Random.Range(0, validDir.Count)];
+        else
+            moveDirection = -moveDirection;
     }
 }
