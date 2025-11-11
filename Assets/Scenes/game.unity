@@ -707,7 +707,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  angle: 80
+  dash: 25
+  sutamina: 25
+  dead: 0
 --- !u!54 &278885532
 Rigidbody:
   m_ObjectHideFlags: 0
