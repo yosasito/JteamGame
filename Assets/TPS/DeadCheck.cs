@@ -1,29 +1,28 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeadCheck : MonoBehaviour
 {
-    [SerializeField] GameObject player;
-    PlayerController playerController;
-
-    TextMeshProUGUI uiText;
+    [SerializeField] private GameObject player;
+    private PlayerController playerController;
+    private TextMeshProUGUI uiText;
 
     private void Start()
     {
         playerController = player.GetComponent<PlayerController>();
         uiText = GetComponent<TextMeshProUGUI>();
     }
-    void Update()
+
+    private void Update()
     {
-        if (playerController.dead == true)
+        if (playerController.dead)
         {
-            //Debug.Log("GameOver");
+            Debug.Log("GameOver");
             uiText.text = "GameOver";
-        }
-        if (playerController.dead == false)
-        {
-            //Debug.Log("GameOver");
-            uiText.text = " ";
+
+            // ÉVÅ[ÉìêÿÇËë÷Ç¶
+            SceneManager.LoadScene("GameOver");
         }
     }
 }
