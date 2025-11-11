@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 138164063684271925}
   - component: {fileID: 7836045182320406955}
   - component: {fileID: -6063939350248293449}
+  - component: {fileID: -3619077183911550619}
   m_Layer: 10
   m_Name: Cube (3)
   m_TagString: Key
@@ -121,3 +122,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a63df2009be2224787047bc3b2c6199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &-3619077183911550619
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8709613745023257277}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
