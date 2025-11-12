@@ -1,49 +1,63 @@
 using UnityEngine;
+using System.Collections;
 
 public class PressurePlate : MonoBehaviour
 {
-    public GameObject door; 
-    public float openHeight = 100f; // 開く高さ
-    public float openSpeed = 2f; // 開閉スピード
+    public GameObject[] doors;   
+    public float openHeight = 5f;
+    public float openSpeed = 2f;
 
     private bool isOpen = false;
+    private bool moving = false;
+
     private Vector3 closedPos;
     private Vector3 openPos;
 
-    private bool Moving = false;
-
     void Start()
     {
-        // 扉の位置
-        closedPos = door.transform.position;
-        openPos = closedPos + Vector3.up * openHeight;
-    }
-
-    private void OnTriggerEnter(Collider other)//playerが踏む
-    {
-        if (other.CompareTag("Player") && !Moving)
+        if (doors.Length > 0)
         {
-            isOpen = !isOpen;
-            StopAllCoroutines();
-            StartCoroutine(MoveDoor(isOpen));
+            closedPos = doors[0].transform.position;//位置
+            openPos = closedPos + Vector3.up * openHeight;
         }
     }
 
-    System.Collections.IEnumerator MoveDoor(bool open)
+    private void OnTriggerEnter(Collider other)
     {
-        Moving = true;
-        Vector3 start = door.transform.position;
-        Vector3 end = open ? openPos : closedPos;
+        if (other.CompareTag("Player") && !moving)
+        {
+            isOpen = !isOpen;
+            StopAllCoroutines();
+            StartCoroutine(MoveDoors(isOpen)); // 壁を動かす
+        }
+    }
+
+    IEnumerator MoveDoors(bool open)//ゆっくり
+    {
+        moving = true;
         float t = 0f;
+
+        Vector3[] startPos = new Vector3[doors.Length];
+        Vector3[] endPos = new Vector3[doors.Length];
+
+        // 各ドアの開始・終了位置を準備
+        for (int i = 0; i < doors.Length; i++)
+        {
+            startPos[i] = doors[i].transform.position;
+            endPos[i] = open ? (startPos[i] + Vector3.up * openHeight)
+                             : (startPos[i] - Vector3.up * openHeight);
+        }
 
         while (t < 1f)
         {
             t += Time.deltaTime * openSpeed;
-            door.transform.position = Vector3.Lerp(start, end, t);
+            for (int i = 0; i < doors.Length; i++)
+            {
+                doors[i].transform.position = Vector3.Lerp(startPos[i], endPos[i], t);
+            }
             yield return null;
         }
 
-        door.transform.position = end;
-        Moving = false;
+        moving = false;
     }
 }
