@@ -371,7 +371,7 @@ MonoBehaviour:
   player: {fileID: 1603678233532800124, guid: 5fbf0ed889dbe844487b29885eb918bb, type: 3}
   speed: 20
   speedUp: 1.1
-  searchLength: 20
+  searchLength: 40
   rayLength: 2
   Chasing: 0
 --- !u!23 &5338412014194057550

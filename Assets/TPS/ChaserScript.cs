@@ -24,13 +24,13 @@ public class ChaserScript : MonoBehaviour
 
     void Update()
     {
-        // 鬼とプレイヤーの距離
+        // プレイヤーと距離
         float distance = Vector3.Distance(player.position, transform.position);
         Chasing = distance <= searchLength;
 
         speedUp += 0.001f;
 
-        // ★ 正面が壁なら方向転換
+        // 方向変化
         if (TouchWall())
         {
             speedUp = 1f;
@@ -58,9 +58,10 @@ public class ChaserScript : MonoBehaviour
         return Physics.Raycast(origin, moveDirection, rayLength, LayerMask.GetMask("Wall"));
     }
 
-    // ★ プレイヤー方向へ向く
     void ChaserOn()
     {
+        Debug.Log("追跡追跡追跡追跡追跡追跡");
+
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0;
 
