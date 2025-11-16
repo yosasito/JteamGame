@@ -23,19 +23,18 @@ public class PlayerController : MonoBehaviour
 
         move = new Vector3(h, 0, v);
 
-        // 向きの更新（移動方向に回転）
+        // 回転
         if (move.sqrMagnitude > 0.001f)
         {
-            // 入力方向を基に回転を設定
             m_Rotation = Quaternion.LookRotation(move);
         }
-        // ダッシュとスタミナ処理
+        // ダッシュ
         if (Input.GetKey(KeyCode.Space))
         {
             if (sutamina > 0)
             {
                 move *= dash;
-                sutamina -= 0.01f;
+                sutamina -= 0.015f;
             }
             else
             {
