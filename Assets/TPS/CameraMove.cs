@@ -2,23 +2,28 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    [SerializeField] public GameObject player;
-    [SerializeField] float hight;
-    [SerializeField] float back;
+    [SerializeField] Transform player;
 
-    PlayerController playerPos;
+    [SerializeField] float height = 2f;
+    [SerializeField] float distance = 5f;
+    [SerializeField] float mouseSens = 120f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    float angle = 0f;
+
+    void LateUpdate()
     {
-        playerPos = player.GetComponent<PlayerController>();
-       
-    }
+        float mouseX = Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
 
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position = playerPos.transform.position + new Vector3(0, hight, back); 
-        //transform.position = playerPos.transform.position + new Vector3(0, 0, back);
+        angle += mouseX;
+
+        Vector3 offset = new Vector3(
+            Mathf.Sin(angle) * distance,
+            height,
+            Mathf.Cos(angle) * distance
+        );
+
+        transform.position = player.position + offset;
+
+        transform.LookAt(player.position + Vector3.up * 1.2f);
     }
 }
