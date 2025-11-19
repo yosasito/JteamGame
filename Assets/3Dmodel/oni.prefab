@@ -373,7 +373,7 @@ MonoBehaviour:
   speedUp: 1.1
   searchLength: 40
   rayLength: 2
-  rayLengthforPlayer: 10
+  rayLengthforPlayer: 20
   Chasing: 0
 --- !u!23 &5338412014194057550
 MeshRenderer:

@@ -61,7 +61,7 @@ public class ChaserScript : MonoBehaviour
 
     void ChaserOn()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.5f;
+        Vector3 origin = transform.position + Vector3.up * 1.5f;
 
         // 4方向
         Vector3[] dirs =
@@ -74,8 +74,9 @@ public class ChaserScript : MonoBehaviour
 
         foreach (var dir in dirs)
         {
+            Debug.DrawRay(origin, dir * (rayLength * rayLengthforPlayer), Color.red, 0.1f);
             // 4方向にレイを飛ばす（壁判定とは別）
-            if (Physics.Raycast(origin, dir, out RaycastHit hit, rayLength * rayLengthforPlayer))
+            if (Physics.SphereCast(origin,1f, dir, out RaycastHit hit, rayLength * rayLengthforPlayer))
             {
                 if (hit.collider.CompareTag("Player")) // プレイヤーに当たった方向へ移動
                 {
