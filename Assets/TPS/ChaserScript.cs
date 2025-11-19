@@ -10,6 +10,7 @@ public class ChaserScript : MonoBehaviour
     public float searchLength = 15f;
 
     public float rayLength = 2f;
+    public float rayLengthforPlayer = 10f;
 
     public bool Chasing = false;
 
@@ -60,41 +61,32 @@ public class ChaserScript : MonoBehaviour
 
     void ChaserOn()
     {
-        Debug.Log("追跡追跡追跡追跡追跡追跡");
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
 
-        Vector3 toPlayer = player.position - transform.position;
-        toPlayer.y = 0;
-
-        Vector3 bestDir = Vector3.zero;
-        float bestDot = -999f;
-
+        // 4方向
         Vector3[] dirs =
         {
-            Vector3.forward,
-            Vector3.back,
-            Vector3.left,
-            Vector3.right
+        Vector3.forward,
+        Vector3.back,
+        Vector3.left,
+        Vector3.right
         };
 
         foreach (var dir in dirs)
         {
-            // チェック
-            if (Physics.Raycast(transform.position + Vector3.up * 0.5f, dir, rayLength, LayerMask.GetMask("Wall")))
-                continue;
-
-            float dot = Vector3.Dot(dir, toPlayer.normalized);
-            if (dot > bestDot)
+            // 4方向にレイを飛ばす（壁判定とは別）
+            if (Physics.Raycast(origin, dir, out RaycastHit hit, rayLength * rayLengthforPlayer))
             {
-                bestDot = dot;
-                bestDir = dir;
+                if (hit.collider.CompareTag("Player")) // プレイヤーに当たった方向へ移動
+                {
+                    moveDirection = dir;
+                    Debug.Log("追跡方向：" + dir);
+                    return;
+                }
             }
         }
-
-        if (bestDir != Vector3.zero)
-            moveDirection = bestDir;
-        else
-            moveDirection = -moveDirection; // 反射
     }
+
 
     void ChaserOff()//徘徊
     {
@@ -121,5 +113,7 @@ public class ChaserScript : MonoBehaviour
             moveDirection = validDir[Random.Range(0, validDir.Count)];
         else
             moveDirection = -moveDirection;
+
+        speed *= 0.6f;
     }
 }
