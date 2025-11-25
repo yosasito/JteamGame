@@ -373,7 +373,7 @@ MonoBehaviour:
   speedUp: 1.1
   searchLength: 40
   rayLength: 2
-  rayLengthforPlayer: 20
+  rayLengthforPlayer: 8
   Chasing: 0
   playerMask:
     serializedVersion: 2
