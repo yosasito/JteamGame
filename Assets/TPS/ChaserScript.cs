@@ -14,6 +14,8 @@ public class ChaserScript : MonoBehaviour
 
     public bool Chasing = false;
 
+    public LayerMask playerMask;
+
     private Rigidbody rb;
     private Vector3 moveDirection;
 
@@ -40,7 +42,7 @@ public class ChaserScript : MonoBehaviour
             {
                 ChaserOn();
             }
-            else 
+            else
                 ChaserOff();
         }
 
@@ -61,7 +63,7 @@ public class ChaserScript : MonoBehaviour
 
     void ChaserOn()
     {
-        Vector3 origin = transform.position + Vector3.up * 1.5f;
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
 
         // 4方向
         Vector3[] dirs =
@@ -74,11 +76,13 @@ public class ChaserScript : MonoBehaviour
 
         foreach (var dir in dirs)
         {
-            Debug.DrawRay(origin, dir * (rayLength * rayLengthforPlayer), Color.red, 0.1f);
-            // 4方向にレイを飛ばす（壁判定とは別）
-            if (Physics.SphereCast(origin,1f, dir, out RaycastHit hit, rayLength * rayLengthforPlayer))
+            float playerCheckDistance = rayLengthforPlayer;
+
+            Debug.DrawRay(origin, dir * playerCheckDistance * rayLength, Color.red, 0.1f);
+
+            if (Physics.SphereCast(origin, 5f, dir, out RaycastHit hit, playerCheckDistance * rayLength, playerMask))
             {
-                if (hit.collider.CompareTag("Player")) // プレイヤーに当たった方向へ移動
+                if (hit.collider.CompareTag("Player"))
                 {
                     moveDirection = dir;
                     Debug.Log("追跡方向：" + dir);
