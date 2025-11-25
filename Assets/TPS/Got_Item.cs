@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Got_Item : MonoBehaviour
 {
-    public int score = 0;
+    int score = 0;
+    public int clearTask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +18,7 @@ public class Got_Item : MonoBehaviour
     }
     void Update()
     {
-        if (score == 2)
+        if (score == clearTask)
         {
             Destroy(this.gameObject);
         }

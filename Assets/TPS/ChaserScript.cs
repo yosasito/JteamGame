@@ -90,11 +90,13 @@ public class ChaserScript : MonoBehaviour
                 }
             }
         }
+        speed = 25f;
     }
 
 
     void ChaserOff()//œpœj
     {
+        speed = 18f;
         Vector3[] dirs =
         {
             Vector3.forward,
