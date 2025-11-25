@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float speed = 15.0f;
-    [SerializeField] float dash = 25f;
+    [SerializeField] public Transform cam;
+
+    [SerializeField] float speed = 5f;
+    [SerializeField] float dash = 10f;
     [SerializeField] public float sutamina = 25f;
 
     public bool dead = false;
@@ -16,54 +18,57 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
+
     void Update()
     {
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
 
-        move = new Vector3(h, 0, v);
+        // カメラ基準の前後左右
+        Vector3 forward = cam.forward;
+        Vector3 right = cam.right;
 
-        // 向きの更新（移動方向に回転）
-        if (move.sqrMagnitude > 0.001f)
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 camMove = forward * v + right * h;
+
+        if (camMove.sqrMagnitude > 0.001f)
         {
-            // 入力方向を基に回転を設定
-            m_Rotation = Quaternion.LookRotation(move);
+            m_Rotation = Quaternion.LookRotation(camMove);
         }
-        // ダッシュとスタミナ処理
+
+        move = camMove.normalized;
+
+        // ダッシュ
         if (Input.GetKey(KeyCode.Space))
         {
             if (sutamina > 0)
             {
                 move *= dash;
-                sutamina -= 0.01f;
+                sutamina -= 0.015f;
             }
-            else
-            {
-                move *= speed;
-            }
+            else move *= speed;
         }
         else
         {
             move *= speed;
             sutamina += 0.003f;
-            if (sutamina >= 25f)
-            {
-                sutamina = 25f;
-            }
+            if (sutamina > 25f) sutamina = 25f;
         }
     }
+
     void FixedUpdate()
     {
-        // 回転を適用
         rb.MoveRotation(m_Rotation);
-        // 速度を直接適用
         rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
     }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
-        {
             dead = true;
-        }
     }
 }
