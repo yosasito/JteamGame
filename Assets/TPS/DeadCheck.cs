@@ -22,8 +22,8 @@ public class DeadCheck : MonoBehaviour
             uiText.text = "GameOver";
 
             // ƒV[ƒ“Ø‚è‘Ö‚¦
-            //yield
-            SceneManager.LoadScene("GameOver");
+            yield return new WaitForSeconds(1f);
+            //SceneManager.LoadScene("GameOver");
         }
     }
 }
