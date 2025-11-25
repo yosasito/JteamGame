@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PressurePlate : MonoBehaviour
+public class SwitchDoor : MonoBehaviour
 {
     public GameObject[] doors;   
     public float openHeight = 5f;
