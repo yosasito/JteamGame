@@ -388,4 +388,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hit: 0
-  hitCount: 3
+  hitCount: 1
