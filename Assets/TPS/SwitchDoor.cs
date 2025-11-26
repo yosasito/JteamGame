@@ -13,6 +13,7 @@ public class SwitchDoor : MonoBehaviour
     private Vector3 closedPos;
     private Vector3 openPos;
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (doors.Length > 0)

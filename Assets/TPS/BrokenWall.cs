@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BrokenWall : MonoBehaviour
 {
-    public int hit = 0;
+    public int enemyHit = 0;
     public int hitCount=3;
+    public float rayLength = 2f;
+
+    public LayerMask enemyMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,18 +18,35 @@ public class BrokenWall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(hit);
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
 
-        if (hit == hitCount)
+        // 4•ûŒü
+        Vector3[] dirs =
+        {
+        Vector3.forward,
+        Vector3.back,
+        Vector3.left,
+        Vector3.right
+        };
+
+        foreach (var dir in dirs)
+        {
+
+            Debug.DrawRay(origin, dir * rayLength, Color.red, 0.1f);
+
+            if (Physics.SphereCast(origin, 5f, dir, out RaycastHit hit,rayLength, enemyMask))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    enemyHit += 1;
+                }
+            }
+        }
+        Debug.Log(enemyHit);
+
+        if (enemyHit == hitCount)
         {
             Destroy(this.gameObject);
-        }
-    }
-    public void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            hit += 1;
         }
     }
 }

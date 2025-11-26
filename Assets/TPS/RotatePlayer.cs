@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
 
+    // Update is called once per frame
     void Update()
     {
         // ‹ŒInput System‚ðŽg—p‚µ‚Ä“ü—ÍŽæ“¾

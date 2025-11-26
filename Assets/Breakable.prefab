@@ -387,5 +387,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30c82b64fa1d6548b1d4914a99e745b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hit: 0
-  hitCount: 1
+  enemyHit: 0
+  hitCount: 3
+  rayLength: 0.5
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
