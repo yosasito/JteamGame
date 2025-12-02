@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dash = 10f;
     [SerializeField] public float sutamina = 25f;
 
+    public float Hp = 10;
     public bool dead = false;
 
     Rigidbody rb;
@@ -71,6 +72,12 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
-            dead = true;
+        {
+            Hp -= 1;
+            Debug.Log("‘Ì—Í= " + Hp);
+
+            if (Hp == 0)
+                dead = true;
+        }
     }
 }
