@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHit: 0
-  hitCount: 3
+  hitCount: 50
   rayLength: 0.5
   enemyMask:
     serializedVersion: 2
