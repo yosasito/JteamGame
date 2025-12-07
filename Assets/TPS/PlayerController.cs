@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Hp -= 1;
-            Debug.Log("‘Ì—Í= " + Hp);
+           // Debug.Log("‘Ì—Í= " + Hp);
 
             if (Hp == 0)
                 dead = true;
