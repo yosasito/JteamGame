@@ -16,8 +16,11 @@ public class ChaserScript : MonoBehaviour
 
     public LayerMask playerMask;
 
-    private Rigidbody rb;
-    private Vector3 moveDirection;
+    public Rigidbody rb;
+    public Vector3 moveDirection;
+
+    public float stuckTimer = 0f;
+    [SerializeField] float stuckLimit = 0.5f; // 0.5秒以上壁に突進でOFF
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +29,7 @@ public class ChaserScript : MonoBehaviour
         ChaserOff();   // 開幕は徘徊
     }
 
+    // Update is called once per frame
     void Update()
     {
         // プレイヤーと距離
@@ -34,15 +38,34 @@ public class ChaserScript : MonoBehaviour
 
         speedUp += 0.001f;
 
-        // 方向変化
-        if (TouchWall())
+        bool hitWall = TouchWall();
+
+        if (Chasing)
+        {
+            if (hitWall)
+            {
+                stuckTimer += Time.deltaTime; // スタックしたら徘徊モード
+                if (stuckTimer >= stuckLimit)
+                {
+                    Debug.Log("壁に突進し続けたため追跡解除");
+                    Chasing = false;
+                    ChaserOff();
+                    stuckTimer = 0f;
+                }
+            }
+            else
+            {
+                stuckTimer = 0f;
+            }
+        }
+
+        // 壁前で方向転換
+        if (hitWall)
         {
             speedUp = 1f;
 
             if (Chasing)
-            {
                 ChaserOn();
-            }
             else
                 ChaserOff();
         }
