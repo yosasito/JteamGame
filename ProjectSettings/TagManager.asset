@@ -10,6 +10,7 @@ TagManager:
   - Test2
   - Key
   - KeyHave
+  - Goal
   layers:
   - Default
   - TransparentFX
