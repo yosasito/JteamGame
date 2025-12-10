@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class StaminaBar : MonoBehaviour
 {
-    private Image image;
+    Image image;
 
     [SerializeField] GameObject player;
     PlayerController playerController;
