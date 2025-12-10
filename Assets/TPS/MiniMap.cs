@@ -3,6 +3,7 @@ using UnityEngine;
 public class MiniMap : MonoBehaviour
 {
     [SerializeField] Transform player;
+
     public float hight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

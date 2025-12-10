@@ -33,7 +33,7 @@ public class Got_Item : MonoBehaviour
     public void AddScore(int plus)
     {
         score += plus;
-        Debug.Log(score);
+        Debug.Log("‰ñû”= " + score);
 
         UpdateUI();
     }
