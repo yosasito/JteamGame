@@ -20,7 +20,7 @@ public class ChaserScript : MonoBehaviour
     public Vector3 moveDirection;
 
     public float stuckTimer = 0f;
-    [SerializeField] float stuckLimit = 0.5f; // 0.5秒以上壁に突進でOFF
+    [SerializeField] float stuckLimit = 0.5f; //スタック時間
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,8 +32,7 @@ public class ChaserScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // プレイヤーと距離
-        float distance = Vector3.Distance(player.position, transform.position);
+        float distance = Vector3.Distance(player.position, transform.position);// プレイヤーと距離
         Chasing = distance <= searchLength;
 
         speedUp += 0.001f;
