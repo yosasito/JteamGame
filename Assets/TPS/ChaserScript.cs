@@ -46,7 +46,7 @@ public class ChaserScript : MonoBehaviour
                 stuckTimer += Time.deltaTime; // スタックしたら徘徊モード
                 if (stuckTimer >= stuckLimit)
                 {
-                    Debug.Log("壁に突進し続けたため追跡解除");
+                    Debug.Log("スタック→追跡OFF");
                     Chasing = false;
                     ChaserOff();
                     stuckTimer = 0f;
@@ -69,16 +69,13 @@ public class ChaserScript : MonoBehaviour
                 ChaserOff();
         }
 
-        // 移動
-        rb.linearVelocity = moveDirection * (speed * speedUp);
+        rb.linearVelocity = moveDirection * (speed * speedUp);// 移動
 
-        // 回転
-        if (moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero)// 回転
             rb.MoveRotation(Quaternion.LookRotation(moveDirection));
     }
 
-    // 壁の前まで行ったか
-    bool TouchWall()
+    bool TouchWall()// 壁の前まで行ったか
     {
         Vector3 origin = transform.position + Vector3.up * 0.5f;
         return Physics.Raycast(origin, moveDirection, rayLength, LayerMask.GetMask("Wall"));
@@ -115,7 +112,6 @@ public class ChaserScript : MonoBehaviour
         }
         speed = 25f;
     }
-
 
     void ChaserOff()//徘徊
     {

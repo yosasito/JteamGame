@@ -37,10 +37,11 @@ public class BrokenWall : MonoBehaviour
                 if (hit.collider.CompareTag("Enemy"))
                 {
                     ChaserScript chaser = hit.collider.GetComponent<ChaserScript>();
+
                     if (chaser != null && chaser.Chasing)
                     {
                         enemyHit += 1;
-                        Debug.Log("壊れる壁：ヒット数 = " + enemyHit);
+                        Debug.Log("壁ヒット数 = " + enemyHit);
                     }
                 }
             }
