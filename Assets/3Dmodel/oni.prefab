@@ -381,11 +381,14 @@ MonoBehaviour:
   speedUp: 1.1
   searchLength: 40
   rayLength: 2
-  rayLengthforPlayer: 8
+  rayLengthforPlayer: 10
   Chasing: 0
   playerMask:
     serializedVersion: 2
     m_Bits: 256
+  stuckTimer: 0
+  stuckLimit: 0.5
+  warning: {fileID: 0}
 --- !u!23 &5338412014194057550
 MeshRenderer:
   m_ObjectHideFlags: 0

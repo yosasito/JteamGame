@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
+using Unity.VisualScripting;
 
 public class ChaserScript : MonoBehaviour
 {
@@ -16,11 +19,12 @@ public class ChaserScript : MonoBehaviour
 
     public LayerMask playerMask;
 
-    public Rigidbody rb;
-    public Vector3 moveDirection;
+    Rigidbody rb;
+    Vector3 moveDirection;
 
     public float stuckTimer = 0f;
     [SerializeField] float stuckLimit = 0.5f; //スタック時間
+    [SerializeField] GameObject warning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,6 +77,9 @@ public class ChaserScript : MonoBehaviour
 
         if (moveDirection != Vector3.zero)// 回転
             rb.MoveRotation(Quaternion.LookRotation(moveDirection));
+
+        if (warning != null)
+            warning.SetActive(Chasing);
     }
 
     bool TouchWall()// 壁の前まで行ったか
@@ -100,7 +107,7 @@ public class ChaserScript : MonoBehaviour
 
             Debug.DrawRay(origin, dir * playerCheckDistance * rayLength, Color.red, 0.1f);
 
-            if (Physics.SphereCast(origin, 5f, dir, out RaycastHit hit, playerCheckDistance * rayLength, playerMask))
+            if (Physics.SphereCast(origin, 0.5f, dir, out RaycastHit hit, playerCheckDistance, playerMask))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
