@@ -25,7 +25,7 @@ public class DeadCheck : MonoBehaviour
         {
             isProcessing = true;
             Debug.Log("GameOver");
-            uiText.text = "GameOver";
+           // uiText.text = "GameOver";
 
             StartCoroutine(GoToGameOver());
         }

@@ -41,7 +41,7 @@ public class BrokenWall : MonoBehaviour
                     if (chaser != null && chaser.Chasing)
                     {
                         enemyHit += 1;
-                        Debug.Log("壁ヒット数 = " + enemyHit);
+                       // Debug.Log("壁ヒット数 = " + enemyHit);
                     }
                 }
             }
