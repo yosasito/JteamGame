@@ -14,7 +14,7 @@ public class ChaserScript : MonoBehaviour
     public float searchLength = 15f;
 
     public float rayLength = 2f;
-    public float rayLengthPlayer = 10f;
+   // public float rayLengthPlayer = 10f;
 
     public bool Chasing = false;
 
@@ -86,7 +86,7 @@ public class ChaserScript : MonoBehaviour
         foreach (var dir in dirs)
         {
             if (Physics.SphereCast(origin, 1.5f, dir,
-                out RaycastHit hit, rayLengthPlayer, playerMask))
+                out RaycastHit hit, searchLength, playerMask))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
@@ -125,7 +125,7 @@ public class ChaserScript : MonoBehaviour
                 continue;
 
             if (Physics.SphereCast(origin, 1.5f, dir,
-                out RaycastHit hit, rayLengthPlayer, playerMask))
+                out RaycastHit hit, searchLength, playerMask))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
