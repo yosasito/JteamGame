@@ -107,7 +107,7 @@ public class ChaserScript : MonoBehaviour
 
             Debug.DrawRay(origin, dir * playerCheckDistance * rayLength, Color.red, 0.1f);
 
-            if (Physics.SphereCast(origin, 0.5f, dir, out RaycastHit hit, playerCheckDistance, playerMask))
+            if (Physics.SphereCast(origin, 5f, dir, out RaycastHit hit, playerCheckDistance, playerMask))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
