@@ -8,12 +8,13 @@ public class ChaserScript : MonoBehaviour
 {
     public Transform player;
 
-    public float speed = 5f;
+    public float moveSpeed = 5f;
+    public float chaseSpeed = 5f;
     public float speedUp = 1f;
     public float searchLength = 15f;
 
     public float rayLength = 2f;
-    public float rayLengthforPlayer = 10f;
+    public float rayLengthPlayer = 10f;
 
     public bool Chasing = false;
 
@@ -30,99 +31,50 @@ public class ChaserScript : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        ChaserOff();   // 開幕は徘徊
+        PickRandomDirection();   // 開幕は徘徊
     }
 
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(player.position, transform.position);// プレイヤーと距離
-        Chasing = distance <= searchLength;
+        SearchPlayer();
 
-        speedUp += 0.001f;
+        //if (warning != null)
+            warning.SetActive(Chasing);
+    }
+
+    void FixedUpdate()
+    {
+        speedUp += Time.fixedDeltaTime * 0.2f;
 
         bool hitWall = TouchWall();
 
-        if (Chasing)
-        {
-            if (hitWall)
-            {
-                stuckTimer += Time.deltaTime; // スタックしたら徘徊モード
-                if (stuckTimer >= stuckLimit)
-                {
-                    Debug.Log("スタック→追跡OFF");
-                    Chasing = false;
-                    ChaserOff();
-                    stuckTimer = 0f;
-                }
-            }
-            else
-            {
-                stuckTimer = 0f;
-            }
-        }
-
-        // 壁前で方向転換
+        // ★ 壁に当たった瞬間だけ方向決定
         if (hitWall)
         {
             speedUp = 1f;
 
             if (Chasing)
-                ChaserOn();
+                DecideChaseDirection();
             else
-                ChaserOff();
+                PickRandomDirection();
         }
 
-        rb.linearVelocity = moveDirection * (speed * speedUp);// 移動
+        float speed = Chasing ? chaseSpeed : moveSpeed;
 
-        if (moveDirection != Vector3.zero)// 回転
-            rb.MoveRotation(Quaternion.LookRotation(moveDirection));
-
-        if (warning != null)
-            warning.SetActive(Chasing);
+        rb.linearVelocity = moveDirection * speed * speedUp;
+        rb.MoveRotation(Quaternion.LookRotation(moveDirection));
     }
 
-    bool TouchWall()// 壁の前まで行ったか
+    // =============================
+
+    void SearchPlayer()
     {
+        if (Vector3.Distance(player.position, transform.position) > searchLength)
+            return;
+
         Vector3 origin = transform.position + Vector3.up * 0.5f;
-        return Physics.Raycast(origin, moveDirection, rayLength, LayerMask.GetMask("Wall"));
-    }
 
-    void ChaserOn()
-    {
-        Vector3 origin = transform.position + Vector3.up * 0.2f;
-
-        // 4方向
-        Vector3[] dirs =
-        {
-        Vector3.forward,
-        Vector3.back,
-        Vector3.left,
-        Vector3.right
-        };
-
-        foreach (var dir in dirs)
-        {
-            float playerCheckDistance = rayLengthforPlayer;
-
-            Debug.DrawRay(origin, dir * playerCheckDistance * rayLength, Color.red, 0.1f);
-
-            if (Physics.SphereCast(origin, 5f, dir, out RaycastHit hit, playerCheckDistance, playerMask))
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    moveDirection = dir;
-                    Debug.Log("追跡方向：" + dir);
-                    return;
-                }
-            }
-        }
-        speed = 25f;
-    }
-
-    void ChaserOff()//徘徊
-    {
-        speed = 18f;
         Vector3[] dirs =
         {
             Vector3.forward,
@@ -131,22 +83,90 @@ public class ChaserScript : MonoBehaviour
             Vector3.right
         };
 
-        List<Vector3> validDir = new List<Vector3>();
+        foreach (var dir in dirs)
+        {
+            if (Physics.SphereCast(origin, 1.5f, dir,
+                out RaycastHit hit, rayLengthPlayer, playerMask))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Chasing = true;
+                    return;
+                }
+            }
+        }
+    }
+
+    bool TouchWall()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+        return Physics.SphereCast(origin, 0.4f, moveDirection,
+            out _, rayLength, LayerMask.GetMask("Wall"));
+    }
+
+    // =============================
+
+    void DecideChaseDirection()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        Vector3[] dirs =
+        {
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right
+        };
 
         foreach (var dir in dirs)
         {
-            Vector3 origin = transform.position + Vector3.up * 0.5f;
-            if (!Physics.Raycast(origin, dir, rayLength, LayerMask.GetMask("Wall")))
+            // 壁方向は除外
+            if (Physics.Raycast(origin, dir, rayLength, LayerMask.GetMask("Wall")))
+                continue;
+
+            if (Physics.SphereCast(origin, 1.5f, dir,
+                out RaycastHit hit, rayLengthPlayer, playerMask))
             {
-                validDir.Add(dir);
+                if (hit.collider.CompareTag("Player"))
+                {
+                    if (Chasing)
+                    {
+                        Debug.Log("追跡開始！");
+                    }
+
+                    moveDirection = dir;
+                    return;
+                }
             }
         }
 
-        if (validDir.Count > 0)
-            moveDirection = validDir[Random.Range(0, validDir.Count)];
-        else
-            moveDirection = -moveDirection;
+        // 見失ったら追跡解除
+        Chasing = false;
+        PickRandomDirection();
+    }
 
-        speed *= 0.6f;
+    void PickRandomDirection()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        Vector3[] dirs =
+        {
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right
+        };
+
+        List<Vector3> valid = new();
+
+        foreach (var dir in dirs)
+        {
+            if (!Physics.Raycast(origin, dir, rayLength, LayerMask.GetMask("Wall")))
+                valid.Add(dir);
+        }
+
+        moveDirection = valid.Count > 0
+            ? valid[Random.Range(0, valid.Count)]
+            : transform.forward;
     }
 }

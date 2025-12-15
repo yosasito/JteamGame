@@ -377,17 +377,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3700373468911180763, guid: 9e087f90977709948b34fc33c5fa6a79, type: 3}
-  speed: 18
+  moveSpeed: 7
+  chaseSpeed: 16
   speedUp: 1.1
   searchLength: 40
   rayLength: 2
-  rayLengthforPlayer: 10
+  rayLengthPlayer: 10
   Chasing: 0
   playerMask:
     serializedVersion: 2
     m_Bits: 256
   stuckTimer: 0
-  stuckLimit: 0.5
+  stuckLimit: 1
   warning: {fileID: 0}
 --- !u!23 &5338412014194057550
 MeshRenderer:
