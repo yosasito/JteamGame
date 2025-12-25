@@ -24,7 +24,7 @@ public class ChaserScript : MonoBehaviour
     Vector3 moveDirection;
 
     public float stuckTimer = 0f;
-    [SerializeField] float stuckLimit = 0.5f; //スタック時間
+   // [SerializeField] float stuckLimit = 0.5f; //スタック時間
     [SerializeField] GameObject warning;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
