@@ -60,20 +60,28 @@ public class BrokenWall : MonoBehaviour
         //}
 
         Vector3 origin = transform.position + Vector3.up * 0.5f;
-        Vector3 dir = transform.right; // 壁の前方向
 
-        Debug.DrawRay(origin, dir * checkDistance, Color.red);
-
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, checkDistance, enemyMask))
+        Vector3[] dirs =
         {
-            if (hit.collider.CompareTag("Enemy"))
+            transform.right,
+            -transform.right
+        };
+
+        foreach (var dir in dirs)
+        {
+            Debug.DrawRay(origin, dir * checkDistance, Color.red);
+
+            if (Physics.Raycast(origin, dir, out RaycastHit hit, checkDistance, enemyMask))
             {
+                if (!hit.collider.CompareTag("Enemy"))
+                    continue;
+
                 ChaserScript chaser = hit.collider.GetComponent<ChaserScript>();
                 if (chaser == null || !chaser.Chasing)
-                    return;
+                    continue;
 
-                // 敵の向きが壁に向いているか
-                float dot = Vector3.Dot(hit.collider.transform.forward, transform.forward);
+                // 敵が壁に向かっているか
+                float dot = Vector3.Dot(hit.collider.transform.forward, -dir);
 
                 if (dot > 0.7f) // 正面突進のみ
                 {
@@ -82,6 +90,8 @@ public class BrokenWall : MonoBehaviour
 
                     if (currentHit >= hitCount)
                         Destroy(gameObject);
+
+                    break; // 1フレームで多重加算防止
                 }
             }
         }
