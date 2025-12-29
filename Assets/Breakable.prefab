@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitCount: 2
-  checkDistance: 2.5
+  checkDistance: 2.8
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
