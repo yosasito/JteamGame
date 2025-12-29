@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class SwitchDoor : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class SwitchDoor : MonoBehaviour
     private Vector3 closedPos;
     private Vector3 openPos;
 
+    [SerializeField] TextMeshProUGUI text;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +24,7 @@ public class SwitchDoor : MonoBehaviour
             closedPos = doors[0].transform.position;//à íu
             openPos = closedPos + Vector3.up * openHeight;
         }
+        text.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -29,13 +33,15 @@ public class SwitchDoor : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !moving)
         {
             isOpen = !isOpen;
             StopAllCoroutines();
             StartCoroutine(MoveDoors(isOpen)); // ï«ÇìÆÇ©Ç∑
+
+            ShowText(1.5f);
         }
     }
 
@@ -67,4 +73,16 @@ public class SwitchDoor : MonoBehaviour
 
         moving = false;
     }
+    public void ShowText(float time)//UIèoÇ∑Ç‚Ç¬
+    {
+        StartCoroutine(ShowTextCoroutine(time));
+    }
+
+    IEnumerator ShowTextCoroutine(float time)
+    {
+        text.gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+        text.gameObject.SetActive(false);
+    }
+
 }
