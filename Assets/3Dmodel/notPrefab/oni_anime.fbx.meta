@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: db788194ffa829b4489a74ebaa61c927
+guid: 0c8a0cc901fa4714aacf44dfe8b4af42
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|Armature|Armature|Armature|Take 001|BaseLayer
-      takeName: Armature|Armature|Armature|Armature|Take 001|BaseLayer
-      internalID: 3217440353842357523
+      name: Armature|Armature|Armature|Armature|Armature|Armature|Take 001|BaseL
+      takeName: Armature|Armature|Armature|Armature|Armature|Armature|Take 001|BaseL
+      internalID: -1363764084371815323
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,11 +60,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Armature|Armature|Armature|Take 001|BaseLayer.001
-      takeName: Armature|Armature|Armature|Armature|Take 001|BaseLayer.001
-      internalID: -6748053993582030707
+      name: Armature|Armature|Armature|Armature|Armature|Armature|Take 001|BaseL.001
+      takeName: Armature|Armature|Armature|Armature|Armature|Armature|Take 001|BaseL.001
+      internalID: 7234251324439276334
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -89,11 +89,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Armature|Armature|Armature|Take 001|BaseLayer.002
-      takeName: Armature|Armature|Armature|Armature|Take 001|BaseLayer.002
-      internalID: 6345039806235422032
+      name: Armature|move
+      takeName: Armature|move
+      internalID: 2845759425010373711
       firstFrame: 0
-      lastFrame: 80
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

@@ -14,7 +14,7 @@ public class SwitchDoor : MonoBehaviour
     private Vector3 closedPos;
     private Vector3 openPos;
 
-    [SerializeField] TextMeshProUGUI text;
+    [SerializeField] GameObject text;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,7 +24,7 @@ public class SwitchDoor : MonoBehaviour
             closedPos = doors[0].transform.position;//ˆÊ’u
             openPos = closedPos + Vector3.up * openHeight;
         }
-        text.gameObject.SetActive(false);
+        text.SetActive(false);
     }
 
     // Update is called once per frame
@@ -80,9 +80,9 @@ public class SwitchDoor : MonoBehaviour
 
     IEnumerator ShowTextCoroutine(float time)
     {
-        text.gameObject.SetActive(true);
+        text.SetActive(true);
         yield return new WaitForSeconds(time);
-        text.gameObject.SetActive(false);
+        text.SetActive(false);
     }
 
 }
