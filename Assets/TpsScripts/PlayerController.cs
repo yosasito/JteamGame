@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public float Hp = 10;
     public bool dead = false;
+    bool healed = false;
 
     Rigidbody rb;
     Vector3 move;
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             move *= speed;
-            sutamina += 0.003f;
+            sutamina += 0.001f;
             if (sutamina > 25f) sutamina = 25f;
         }
     }
@@ -79,5 +80,10 @@ public class PlayerController : MonoBehaviour
             if (Hp == 0)
                 dead = true;
         }
+    }
+    public void Heal(int healP)
+    {
+        Hp += healP;
+        //Debug.Log("‘Ì—Í = " + Hp);
     }
 }

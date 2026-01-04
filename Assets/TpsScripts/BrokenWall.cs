@@ -88,7 +88,7 @@ public class BrokenWall : MonoBehaviour
                 {
                     currentHit++;
                     ChangeWall();
-                    Debug.Log("壁HIT＝" + currentHit);
+                    //Debug.Log("壁HIT＝" + currentHit);
 
                     if (currentHit >= hitCount)
                         Destroy(gameObject);
