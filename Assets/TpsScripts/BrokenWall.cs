@@ -9,17 +9,19 @@ public class BrokenWall : MonoBehaviour
 
     //public LayerMask enemyMask;
 
-    public int hitCount = 2;
+    public int hitCount = 18;
     private int currentHit = 0;
 
     public float checkDistance = 0.5f;
     public LayerMask enemyMask;
 
+    [SerializeField] GameObject[] wallLevel;//壊れていく壁
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        ChangeWall();
     }
 
     // Update is called once per frame
@@ -80,21 +82,34 @@ public class BrokenWall : MonoBehaviour
                 if (chaser == null || !chaser.Chasing)
                     continue;
 
-                // 敵が壁に向かっているか
-                float dot = Vector3.Dot(hit.collider.transform.forward, -dir);
+                float dot = Vector3.Dot(hit.collider.transform.forward, -dir);//敵の向き
 
-                if (dot > 0.7f) // 正面突進のみ
+                if (dot > 0.7f) // 正面だけ
                 {
                     currentHit++;
-                    Debug.Log("壁ヒット：" + currentHit);
+                    ChangeWall();
+                    Debug.Log("壁HIT＝" + currentHit);
 
                     if (currentHit >= hitCount)
                         Destroy(gameObject);
 
-                    break; // 1フレームで多重加算防止
+                    break; 
                 }
             }
         }
     }
+    void ChangeWall()
+    {
+        foreach (var a in wallLevel)
+            a.SetActive(false);
 
+        if (currentHit >= 8)
+            wallLevel[2].SetActive(true);   // かなり壊れ
+
+        else if (currentHit >= 5)
+            wallLevel[1].SetActive(true);   // 壊れかけ
+
+        else
+            wallLevel[0].SetActive(true);   // 初期
+    }
 }
