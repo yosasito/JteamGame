@@ -6,7 +6,7 @@ public class MoveImage : MonoBehaviour
     public RectTransform arrow;
     public Vector3 targetPos = new Vector3(-190, 106, 0);
     public float speed = 200f;
-    public float shrinkspeed = 5f;
+    public float shrinkspeed = 200f;
 
     private bool isMoving = false;
     private bool shrink = false;
