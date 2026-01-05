@@ -23,7 +23,7 @@ public class BGMManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "SampleScene"||scene.name=="map" || scene.name == "map2" || scene.name == "Finish" || scene.name == "GameOver")
+        if (scene.name == "SampleScene" || scene.name == "Title" || scene.name=="map" || scene.name == "map2" || scene.name == "Finish" || scene.name == "GameOver")
         {
             audioSource.Stop();
         }

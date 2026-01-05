@@ -33,7 +33,7 @@ public class DeadCheck : MonoBehaviour
 
     private IEnumerator GoToGameOver()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(10f);
         SceneManager.LoadScene("GameOver");
     }
 }
