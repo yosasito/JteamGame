@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,10 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed = 5f;
     [SerializeField] float dash = 10f;
     [SerializeField] public float sutamina = 25f;
+    [SerializeField] float mutekiTime = 1.0f; // –³“GŽžŠÔ
 
     public float Hp = 10;
     public bool dead = false;
     bool healed = false;
+    bool muteki = false;
 
     Rigidbody rb;
     Vector3 move;
@@ -74,16 +77,27 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            if (muteki) 
+                return;
+
             Hp -= 1;
            // Debug.Log("‘Ì—Í= " + Hp);
 
             if (Hp == 0)
                 dead = true;
+
+            StartCoroutine(MutekiMode());
         }
     }
     public void Heal(int healP)
     {
         Hp += healP;
         //Debug.Log("‘Ì—Í = " + Hp);
+    }
+    IEnumerator MutekiMode()
+    {
+        muteki = true;
+        yield return new WaitForSeconds(mutekiTime);
+        muteki = false;
     }
 }
