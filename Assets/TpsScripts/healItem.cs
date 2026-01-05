@@ -36,7 +36,7 @@ public class healItem : MonoBehaviour
         PlayerController playerHeal = other.GetComponent<PlayerController>();
         if (playerHeal != null)
         {
-            playerHeal.Heal(3);
+            playerHeal.Heal(2);
         }
 
         Destroy(gameObject);
