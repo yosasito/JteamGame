@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class BrokenWall : MonoBehaviour
 {
@@ -9,13 +10,17 @@ public class BrokenWall : MonoBehaviour
 
     //public LayerMask enemyMask;
 
-    public int hitCount = 18;
+    public int hitCount = 3;
     private int currentHit = 0;
 
     public float checkDistance = 0.5f;
     public LayerMask enemyMask;
 
     [SerializeField] GameObject[] wallLevel;//壊れていく壁
+
+    bool canHit = true;                 // 追加
+    [SerializeField] float hitCooldown = 0.5f; // 追加（1回の突進間隔）
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -84,11 +89,12 @@ public class BrokenWall : MonoBehaviour
 
                 float dot = Vector3.Dot(hit.collider.transform.forward, -dir);//敵の向き
 
-                if (dot > 0.7f) // 正面だけ
+                if (dot > 0.7f && canHit)  // 正面だけ
                 {
                     currentHit++;
                     ChangeWall();
                     //Debug.Log("壁HIT＝" + currentHit);
+                    StartCoroutine(HitCooldown());
 
                     if (currentHit >= hitCount)
                         Destroy(gameObject);
@@ -103,13 +109,19 @@ public class BrokenWall : MonoBehaviour
         foreach (var a in wallLevel)
             a.SetActive(false);
 
-        if (currentHit >= 8)
+        if (currentHit >= 2)
             wallLevel[2].SetActive(true);   // かなり壊れ
 
-        else if (currentHit >= 5)
+        else if (currentHit >= 1)
             wallLevel[1].SetActive(true);   // 壊れかけ
 
         else
             wallLevel[0].SetActive(true);   // 初期
+    }
+    IEnumerator HitCooldown()
+    {
+        canHit = false;
+        yield return new WaitForSeconds(hitCooldown);
+        canHit = true;
     }
 }
